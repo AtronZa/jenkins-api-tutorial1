@@ -1,6 +1,6 @@
 def vm2=[:]
 vm2.name = 'vm2'
-vm2.host = '192.168.56.103'
+vm2.host = '192.168.56.106'
 vm2.user = 'adminadmin'
 vm2.port = 22
 vm2.password = '12345678'
@@ -8,7 +8,7 @@ vm2.allowAnyHosts = true
 
 def vm3=[:]
 vm3.name = 'vm3'
-vm3.host = '192.168.56.104'
+vm3.host = '192.168.56.107'
 vm3.user = 'adminadmin'
 vm3.port = 22
 vm3.password = '12345678'
@@ -24,10 +24,10 @@ pipeline {
                 echo 'Testing..'
                  script {
                     echo 'git pull'
-                    sshCommand(remote: vm2, command: 'cd api-jenkins-assignment/ && git pull')
+                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial/ && git pull')
                 
                     echo 'Run unit test'
-                    sshCommand(remote: vm2, command: 'cd api-jenkins-assignment/ && python3 unit_test.py')
+                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial/ && python3 unit_test.py')
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building..'
-                    sshCommand(remote: vm2, command: "cd api-jenkins-assignment/ && echo '12345678' | sudo -S docker-compose up -d --build")
+                    sshCommand(remote: vm2, command: "cd jenkins-api-tutorial/ && echo '12345678' | sudo -S docker-compose up -d --build")
                 }
             }
         }
@@ -43,10 +43,10 @@ pipeline {
             steps {
                 script {
                     echo 'git pull'
-                    sshCommand(remote: vm2, command: 'cd robot-jenkins-assignment/ && git pull')
+                    sshCommand(remote: vm2, command: 'cd robot-tutorial/ && git pull')
 
                     echo 'Testing..'
-                    sshCommand(remote: vm2, command: "python3 -m robot robot-jenkins-assignment/test_api.robot")
+                    sshCommand(remote: vm2, command: "python3 -m robot robot-tutorial/test_api.robot")
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     echo 'gitlab login & push'
-                    sshCommand(remote: vm2, command: "cd api-jenkins-assignment/ \
+                    sshCommand(remote: vm2, command: "cd jenkins-api-tutorial/ \
                     && echo '12345678' | sudo -S docker login registry.gitlab.com \
                     && echo 'Jimmymonster' \
                     && echo 'glpat-f4dTxzyDBemNLeNr8MZj' \
