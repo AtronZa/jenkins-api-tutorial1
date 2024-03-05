@@ -1,17 +1,17 @@
 def vm2=[:]
 vm2.name = 'vm2'
-vm2.host = '192.168.56.106'
-vm2.user = 'adminadmin'
+vm2.host = '192.168.56.105'
+vm2.user = 'admin01'
 vm2.port = 22
-vm2.password = '12345678'
+vm2.password = '123789'
 vm2.allowAnyHosts = true
 
 def vm3=[:]
 vm3.name = 'vm3'
-vm3.host = '192.168.56.107'
-vm3.user = 'adminadmin'
+vm3.host = '192.168.56.104'
+vm3.user = 'admin01'
 vm3.port = 22
-vm3.password = '12345678'
+vm3.password = '123789'
 vm3.allowAnyHosts = true
 
 
@@ -24,10 +24,10 @@ pipeline {
                 echo 'Testing..'
                  script {
                     echo 'git pull'
-                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial/ && git pull')
+                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial1/ && git pull')
                 
                     echo 'Run unit test'
-                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial/ && python3 unit_test.py')
+                    sshCommand(remote: vm2, command: 'cd jenkins-api-tutorial1/ && python3 unit_test.py')
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building..'
-                    sshCommand(remote: vm2, command: "cd jenkins-api-tutorial/ && echo '12345678' | sudo -S docker-compose up -d --build")
+                    sshCommand(remote: vm2, command: "cd jenkins-api-tutorial1/ && echo '123789' | sudo -S docker-compose up -d --build")
                 }
             }
         }
@@ -55,11 +55,11 @@ pipeline {
                 script {
                     echo 'gitlab login & push'
                     sshCommand(remote: vm2, command: "cd jenkins-api-tutorial/ \
-                    && echo '12345678' | sudo -S docker login registry.gitlab.com \
-                    && echo 'Jimmymonster' \
-                    && echo 'glpat-f4dTxzyDBemNLeNr8MZj' \
-                    && echo '12345678' | sudo -S docker build -t registry.gitlab.com/jimmymonster/jenkins-api-unittest . \
-                    && echo '12345678' | sudo -S docker push registry.gitlab.com/jimmymonster/jenkins-api-unittest"
+                    && echo '123789' | sudo -S docker login registry.gitlab.com \
+                    && echo 'AtronZa' \
+                    && echo 'glpat-dELetyNVgRxYatiskgJy' \
+                    && echo '123789' | sudo -S docker build -t registry.gitlab.com/jimmymonster/jenkins-api-unittest . \
+                    && echo '123789' | sudo -S docker push registry.gitlab.com/jimmymonster/jenkins-api-unittest"
                     )
 
                 }
@@ -68,13 +68,13 @@ pipeline {
         stage('Deploy on Vm3') {
             steps {
                 echo 'gitlab pull and create container'
-                sshCommand(remote: vm3, command: "echo '12345678' | sudo -S docker login registry.gitlab.com \
-                    && echo 'Jimmymonster' \
-                    && echo 'glpat-f4dTxzyDBemNLeNr8MZj' \
-                    && echo '12345678' | sudo -S docker pull registry.gitlab.com/jimmymonster/jenkins-api-unittest \
-                    && echo '12345678' | sudo -S docker stop api \
-                    && echo '12345678' | sudo -S docker rm api \
-                    && echo '12345678' | sudo -S docker run -d -p 8001:5000 --name api registry.gitlab.com/jimmymonster/jenkins-api-unittest"
+                sshCommand(remote: vm3, command: "echo '123789' | sudo -S docker login registry.gitlab.com \
+                    && echo 'AtronZa' \
+                    && echo 'glpat-dELetyNVgRxYatiskgJy' \
+                    && echo '123789' | sudo -S docker pull registry.gitlab.com/jimmymonster/jenkins-api-unittest \
+                    && echo '123789' | sudo -S docker stop api \
+                    && echo '123789' | sudo -S docker rm api \
+                    && echo '123789' | sudo -S docker run -d -p 8001:5000 --name api registry.gitlab.com/jimmymonster/jenkins-api-unittest"
                     )
 
             }
